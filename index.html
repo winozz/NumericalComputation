@@ -3,8 +3,125 @@
     <title> Bisection Method </title>
 
 </head>
+<style>
+
+div.container{
+    min-width: 980px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    
+}
+
+div.input{
+    display: inline-block;
+    max-width: 400px;
+    border-color: black;
+    border-style: groove;
+    text-decoration: solid;
+    text-shadow: 10px;
+    background-color: antiquewhite;
+    margin: 100px;
+    padding-top: -50px;
+    padding: 100px;
+    
+    
+}
+div.output{
+    display: inline-block;
+    max-width: 400px;
+    border-color: black;
+    border-style: groove;
+    text-decoration: solid;
+    text-shadow: 10px;
+    background-color: antiquewhite;
+    margin: 100px;
+    margin-left: 400px;
+    padding-top: -50px;
+    padding: 100px;
+    
+    
+}
+
+</style>
+<script language="javascript" type="text/javascript">
+
+
+</script>
+
 <html>
 
+<body>
+ 
+    <div class="container">
+        <div class="input">
+            <h2>Bisection Method</h2><br> 
+            <p>root of an equation using Bisection method</p>
+            <form></form>
+            <p>f(x)= <input type="text" id="fx" name="fx"> </p>
+            <p>Find 
+                <input type="radio" id="anyroot" name="option1" value="ANYROOT">
+                <label for="anyroot">Any Root </label> 
+                <input type="radio" id="rootbetween" name="option1" value="ROOTBETWEEN">
+                <label for="rootbetween">Root Between </label> 
+                <input type="text" id="input1" name="inputfind"> and <input type="text" id="input2" name="inputfind"> 
+            </p>
 
+            <input type="submit" name="ctl00$ContentPlaceHolder1$BtnFind" value="Find" onclick="return BtnFind_Click();" id="ContentPlaceHolder1_BtnFind" title="Find" class="button1">
+            <input name="ctl00$ContentPlaceHolder1$BtnRandom" type="button" id="ContentPlaceHolder1_BtnRandom" class="button1" onclick="RndClick()" title="Random" value="Random">
+            <input id="BtnNew" class="button1" onclick="NewClick()" title="New" type="button" value="New">
+            
+           <p>Print digit= 
+            <select name="ctl00$ContentPlaceHolder1$ModeDPlaceCtl1$ddlDPlace" id="ContentPlaceHolder1_ModeDPlaceCtl1_ddlDPlace">
+                <option value="0">0</option>
+                <option selected="selected" value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                </select>
+            </p >
+            <p> Solution correct upto digit =  
+                <select name="ctl00$ContentPlaceHolder1$ddlDPlaceM" id="ContentPlaceHolder1_ddlDPlaceM">
+                    <option selected="selected" value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    </select>
+            </p>
+
+            <p>Trig Function Mode=
+                <select name="ctl00$ContentPlaceHolder1$TMode" id="ContentPlaceHolder1_TMode">
+                    <option selected="selected" value="R">Radian</option>
+                    <option value="D">Degree</option>
+                    </select>
+                
+            </p>
+            
+        </div>
+
+        <div class="output"> 
+            <p>try</p>
+            <p>try</p>
+            <p>try</p>
+            <p>try</p>
+            <p>try</p>
+            <p>try</p>
+            <p>try</p>
+
+        </div>
+
+
+    </div>
+
+
+</body> 
 
 </html> 
