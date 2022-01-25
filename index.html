@@ -1,327 +1,28 @@
 <!DOCTYPE html>
-<head> 
+
+<head>
     <title> Bisection Method </title>
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="js/bootstrap.bundle.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script src="=scripts/find.js" type="text/javascript"></script>
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script>
+    <script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+        </script>
 
 </head>
-<style>
 
-div.container{
-    min-width: 980px;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    
-}
 
-div.input{
-    max-width: 400px;
-    border-color: black;
-    text-decoration: solid;
-    text-shadow: 10px;
-    padding-top: -50px;
-    margin: 3em;
-    padding: 2em;
-    border-radius: 18px;
-    box-shadow: 0 0 36px #0003;
-    display: flexbox;
-    flex-direction: column;
+<script>
     
-    
-}
-div.output{
-    max-width: 400px;
-    border-color: black;
-    text-decoration: solid;
-    text-shadow: 10px;
-    padding-top: -50px;
-    margin: 3em;
-    padding: 2em;
-    border-radius: 18px;
-    box-shadow: 0 0 36px #0003;
-    display: flexbox;
-    align-items: center;
 
-    flex-direction: column;
-    
-    
-}
 
-</style>
-<script language="javascript" type="text/javascript">
-
-    <!--
-    function ddlIteration_Change()
-    {
-        if(document.getElementById('ContentPlaceHolder1_ddlIteration').value==2)
-        {
-            document.getElementById("root1").innerHTML = "Initial solution x0";
-            document.getElementById("root2").style.visibility = "hidden";
-            document.getElementById("spanFx").innerHTML = "x = phi(x) = ";
-        }
-        else
-        {
-            document.getElementById("root1").innerHTML = "Root Between";
-            document.getElementById("root2").style.visibility = "";
-            document.getElementById("spanFx").innerHTML = "f(x) = ";
-        }
-    }
-    
-    function NewClick()
-    {
-        document.getElementById("ContentPlaceHolder1_txtFx").value = "";
-        document.getElementById("ContentPlaceHolder1_txtRootFrom").value = "";
-        document.getElementById("ContentPlaceHolder1_txtRootTo").value = "";
-    }
-    
-    function ddlFind_change()
-    {
-        //-->Common code
-        var SQS = "q="+ document.getElementById('ContentPlaceHolder1_ddlFind').value;
-        //<--Common code
-        
-        displayProgress(document.getElementById("ContentPlaceHolder1_UpdateProgress1"));
-        location.href = getURL("Bisection.aspx?"+ SQS);
-        return false;
-    }
-    
-    function BtnFind_Click() 
-    {
-        if(!isInputValid())
-            return false;
-            
-        var SVal = getContentS();
-        document.getElementById('ContentPlaceHolder1_hq1').value = SVal;
-        //return true;
-    
-        var Sq1 = document.getElementById('ContentPlaceHolder1_hq1').value;
-    
-        //-->Common code
-        var SQS = "q="+ document.getElementById('ContentPlaceHolder1_hMethod').value;
-        SQS += "&q1="+ encodeURIComponent(Sq1);
-        
-        //<--Common code
-        
-        //SQS += "&dm="+ document.getElementById('ContentPlaceHolder1_ModeDPlaceCtl1_ddlDMode').value;
-        SQS += "&dp="+ document.getElementById('ContentPlaceHolder1_ModeDPlaceCtl1_ddlDPlace').value;
-    
-        SQS += "&tm="+ document.getElementById('ContentPlaceHolder1_TMode').value;
-    
-        document.cookie = 'r2=2';
-        SQS += "&do=1";
-        if(PostbackMethodUsed(SQS))
-            return true;
-        
-        displayProgress(document.getElementById("ContentPlaceHolder1_UpdateProgress1"));
-        location.href = getURL("Bisection.aspx?"+ SQS);
-        return false;
-    }
-    
-    function getContentS()
-    {
-        var Fx = document.getElementById("ContentPlaceHolder1_txtFx").value;
-        var dFx = "";
-    
-        if(findObj('ContentPlaceHolder1_txtDFx', document) != null)
-        {
-            document.getElementById("ContentPlaceHolder1_txtDFx").value = trim(document.getElementById("ContentPlaceHolder1_txtDFx").value);
-            dFx = document.getElementById("ContentPlaceHolder1_txtDFx").value;
-        }
-        var BAnyRoot = document.getElementById("ContentPlaceHolder1_rbAnyRoot").checked;
-        var RFrom = document.getElementById("ContentPlaceHolder1_txtRootFrom").value;
-        var RTo = document.getElementById("ContentPlaceHolder1_txtRootTo").value;
-        var AMethod = 1;
-    
-        
-    
-        var DPlaceM = document.getElementById("ContentPlaceHolder1_ddlDPlaceM").value;
-    
-        return Fx + "`" + dFx + "`" + BAnyRoot + "`" + RFrom + "`" + RTo + "`" + AMethod + "`" + DPlaceM;
-    }
-    
-    function isInputValid()
-    {
-        var SFx = trim(document.getElementById("ContentPlaceHolder1_txtFx").value);
-        SFx = SFx.toLowerCase();
-        SFx = SFx.replace("`","");
-        SFx = SFx.replace("f(x)","");
-        SFx = SFx.replace("base","");
-        SFx = SFx.replace("log10^","log");
-        SFx = SFx.replace("^=","=");
-        
-        if(SFx.indexOf("&")!=-1 || SFx.indexOf("#")!=-1 || SFx.indexOf("<")!=-1 || SFx.indexOf(">")!=-1)
-        {
-            alert("Please enter equation only, &,#,<,> symbols are not allowed")
-            return false;
-        }
-        document.getElementById("ContentPlaceHolder1_txtFx").value = SFx;
-    
-    
-        //-->CONTENTS VALIDATION
-        if(isBlankCtl(document.getElementById("ContentPlaceHolder1_txtFx"))
-        || !isOCBracMatchInCtl(document.getElementById('ContentPlaceHolder1_txtFx'),'(',')')
-        || isCapMinusExists(document.getElementById("ContentPlaceHolder1_txtFx"))
-        )
-            return false;
-        //<--CONTENTS VALIDATION
-    
-    //    if(document.getElementById("ContentPlaceHolder1_ddlFind").value == "nr")
-    //    {
-    //	    //-->CONTENTS VALIDATION
-    //	    if(isBlankCtl(document.getElementById("ContentPlaceHolder1_txtDFx")))
-    //		    return false;
-    //	    //<--CONTENTS VALIDATION
-    //    }
-    
-        if(document.getElementById("ContentPlaceHolder1_rbRootBetn").checked)
-        {
-    //		if(isBlankOrNotNumberCtl(document.getElementById('ContentPlaceHolder1_txtRootFrom')))
-    //			return false;
-    
-            if(isBlankCtl(document.getElementById('ContentPlaceHolder1_txtRootFrom')))
-                return false;
-    
-            if(!isNumber(document.getElementById('ContentPlaceHolder1_txtRootFrom').value,",/")) //not number then true
-            {
-                alert("Please enter only numeric value with , seperated");
-                document.getElementById('ContentPlaceHolder1_txtRootFrom').focus();
-                return false;
-            }
-    
-            if(isPlusOnly(document.getElementById('ContentPlaceHolder1_txtRootFrom').value))
-            {
-                alert("Please enter valid numeric value");
-                document.getElementById('ContentPlaceHolder1_txtRootFrom').focus();
-                return false;
-            }
-    
-            if(document.getElementById('ContentPlaceHolder1_hMethod').value!="nr" && document.getElementById('ContentPlaceHolder1_hMethod').value!="mu" && document.getElementById('ContentPlaceHolder1_hMethod').value!="ha" && document.getElementById('ContentPlaceHolder1_hMethod').value!="st")
-            {
-                if(isBlankOrNotNumberCtl(document.getElementById('ContentPlaceHolder1_txtRootTo')))
-                    return false;
-    
-                if(isPlusOnly(document.getElementById('ContentPlaceHolder1_txtRootTo').value))
-                {
-                    alert("Please enter valid numeric value");
-                    document.getElementById('ContentPlaceHolder1_txtRootTo').focus();
-                    return false;
-                }
-            }
-            
-        }
-        return true;
-    }
-    
-    function isPlusOnly(S)
-    {
-        if(S=="+" || S=="-" || S=="*" || S=="/" || S=="." || S=="?" || S=="^")
-            return true;
-    
-        return false;
-    }
-    
-    function BodyLoad()
-    {
-        if(document.getElementById('ContentPlaceHolder1_hBody').value==0)
-        {
-            document.getElementById('ContentPlaceHolder1_hBody').value=1;
-            if(document.getElementById("ContentPlaceHolder1_hq1").value!="")
-                setRandomTryThisValue(document.getElementById("ContentPlaceHolder1_hq1").value);
-            else
-                RndClick();
-        }
-        else
-        {
-            setRandomTryThisValue(document.getElementById("ContentPlaceHolder1_hq1").value);
-            location.href = "#tblSolution";
-        }
-        
-        OptClick();
-        
-        
-        
-    }
-    
-    function RndClick()
-    {
-        var SDefVal = "";
-        SDefVal += "" + "2x^3-2x-5`6x^2-2";
-        SDefVal += "~" + "x^3-x-1`3x^2-1";
-        SDefVal += "~" + "x^3+2x^2+x-1`3x^2+4x+1";
-        SDefVal += "~" + "x^3-2x-5`3x^2-2";
-        SDefVal += "~" + "x^3-x+1`3x^2-1";
-        SDefVal += "~" + "sqrt(12)`";
-        SDefVal += "~" + "cuberoot(48)`";
-    //	SDefVal += "~" + "cos(x)`-sin(x)";
-    //	SDefVal += "~" + "2*cos(x)-x`-2*sin(x)-1";
-    
-        var SDefs = SDefVal.split("~");
-        var Ind = NextRandom(document.getElementById('ContentPlaceHolder1_hPrevInd').value,SDefs.length,"Next");
-        document.getElementById('ContentPlaceHolder1_hPrevInd').value = Ind;
-    
-        setRandomTryThisValue(SDefs[Ind]);
-    }
-    
-    function setRandomTryThisValue(SDef)
-    {
-        var SValA = SDef.split("`");
-        
-        document.getElementById("ContentPlaceHolder1_txtFx").value = SValA[0];
-    
-        if(SValA.length>1)
-        {   
-            if(SValA[1] != "")
-            {
-    //            if(findObj('ContentPlaceHolder1_txtDFx', document) != null)
-    //	            document.getElementById("ContentPlaceHolder1_txtDFx").value = SValA[1];
-            }
-        }
-            
-        if(SValA.length>2)
-        {
-            document.getElementById("ContentPlaceHolder1_rbAnyRoot").checked = SValA[2];
-            document.getElementById("ContentPlaceHolder1_rbRootBetn").checked = !eval(SValA[2]);
-            
-            document.getElementById("ContentPlaceHolder1_txtRootFrom").value = SValA[3];
-            document.getElementById("ContentPlaceHolder1_txtRootTo").value = SValA[4];
-    
-            if(SValA.length>5)
-            {
-                
-            }
-            
-            if(SValA.length>6)
-            {
-                document.getElementById("ContentPlaceHolder1_ddlDPlaceM").value = SValA[6];
-            }
-        }   
-    
-        if(document.getElementById('ContentPlaceHolder1_hMethod').value=="nr" || document.getElementById('ContentPlaceHolder1_hMethod').value=="ha" || document.getElementById('ContentPlaceHolder1_hMethod').value=="st")
-        {
-            document.getElementById("root1").innerHTML = "Initial solution x0";
-            document.getElementById("root2").style.visibility = "hidden";
-        }
-        else if(document.getElementById('ContentPlaceHolder1_hMethod').value=="mu")
-        {
-            document.getElementById("root1").innerHTML = "Initial x0,x1,x2";
-            document.getElementById("root2").style.visibility = "hidden";
-            if(SValA.length<=2)
-                document.getElementById("ContentPlaceHolder1_txtRootFrom").value = "0,1,2";
-        }
-    
-    }
-    
-    function OptClick()
-    {
-        var BVal = document.getElementById("ContentPlaceHolder1_rbAnyRoot").checked;
-        document.getElementById('ContentPlaceHolder1_txtRootFrom').disabled = BVal;
-        document.getElementById('ContentPlaceHolder1_txtRootTo').disabled = BVal;
-    }
-    
-    function LBFind_Click(SVal)
-    {
-        document.getElementById('ContentPlaceHolder1_ddlAMethod').value=SVal;
-    }
-    
-    		
-        </script>
 
 
 </script>
@@ -329,78 +30,36 @@ div.output{
 <html>
 
 <body>
- 
+
     <div class="container">
         <div class="input">
-            <h2>Bisection Method</h2><br> 
+            <h2>Bisection Method</h2><br>
             <p>root of an equation using Bisection method</p>
-            <form></form>
-            <p>f(x)= <input type="text" id="fx" name="fx"> </p>
-            <p>Find 
-                <input type="radio" id="anyroot" name="option1" value="ANYROOT">
-                <label for="anyroot">Any Root </label> 
-                <input type="radio" id="rootbetween" name="option1" value="ROOTBETWEEN">
-                <label for="rootbetween">Root Between </label> 
-                <input type="text" id="input1" name="inputfind"> and <input type="text" id="input2" name="inputfind"> 
-            </p>
 
-            <input type="submit" name="ctl00$ContentPlaceHolder1$BtnFind" value="Find" onclick="return BtnFind_Click();" id="ContentPlaceHolder1_BtnFind" title="Find" class="button1">
-            <input name="ctl00$ContentPlaceHolder1$BtnRandom" type="button" id="ContentPlaceHolder1_BtnRandom" class="button1" onclick="RndClick()" title="Random" value="Random">
-            <input id="BtnNew" class="button1" onclick="NewClick()" title="New" type="button" value="New">
-            
-           <p>Print digit= 
-            <select name="ctl00$ContentPlaceHolder1$ModeDPlaceCtl1$ddlDPlace" id="ContentPlaceHolder1_ModeDPlaceCtl1_ddlDPlace">
-                <option value="0">0</option>
-                <option selected="selected" value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-                </select>
-            </p >
-            <p> Solution correct upto digit =  
-                <select name="ctl00$ContentPlaceHolder1$ddlDPlaceM" id="ContentPlaceHolder1_ddlDPlaceM">
-                    <option selected="selected" value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    </select>
-            </p>
+            <p>f(x)= <input type="text" id="fx" style="width:250px;" value="0"> </p>
 
-            <p>Trig Function Mode=
-                <select name="ctl00$ContentPlaceHolder1$TMode" id="ContentPlaceHolder1_TMode">
-                    <option selected="selected" value="R">Radian</option>
-                    <option value="D">Degree</option>
-                    </select>
-                
-            </p>
+
+            Root Between
+            <input type="number" value="2" id="ContentPlaceHolder1_txtRootFrom" style="width:50px;">
+            <input type="number" value="4" id="ContentPlaceHolder1_txtRootTo" style="width:50px;">
             
+
+            <button type="button" onclick="displaySolution()"  title="Find"> Find </button>
+
+
+
         </div>
 
-        <div class="output"> 
-            <p>try</p>
-            <p>try</p>
-            <p>try</p>
-            <p>try</p>
-            <p>try</p>
-            <p>try</p>
-            <p>try</p>
+        <div id="solution" class="solution">
+            <h5>Solution</h5>
+            <span>Here</span>
+            <p id="fx"> </p>
+
 
         </div>
 
 
-    </div>
 
+</body>
 
-</body> 
-
-</html> 
+</html>
